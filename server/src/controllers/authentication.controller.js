@@ -71,7 +71,7 @@ const login = async (request, response) => {
             return response
                 .status(400)
                 .json({
-                    message: 'User not found. Please register first.',
+                    message: "The user could not be found. Please contact your administrator for access.",
                     status: false,
                 });
         }

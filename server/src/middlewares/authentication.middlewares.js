@@ -7,7 +7,7 @@ const { roles } = SERVER_CONFIG;
 export const authenticate = async (request, response, next) => {
     try {
         const authorizationToken = request.headers['authorization'];
-        console.log('authorizationToken: ', authorizationToken);
+        // console.log('authorizationToken: ', authorizationToken);
 
         if (!authorizationToken || !authorizationToken.startsWith("Bearer")) {
             return response.status(401).json({ message: 'Token is missing. Access Denied.', status: false });
