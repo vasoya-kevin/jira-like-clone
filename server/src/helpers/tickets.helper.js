@@ -1,0 +1,1 @@
+export const ticketBodyValidator = ['title', 'description', 'priority', 'dueDate', 'assignedTo']
