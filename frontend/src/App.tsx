@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout, Login, NotFound, RegisterPage, UserListPage } from "./pages";
 import { ProtectedRoute } from "@/components";
-import Dashboard from "./pages/dashboard";
-import { UserDetailPage, UserProfilePage } from "./pages/users";
+
+import { CreateTicket, TicketDetails, TicketList } from "./pages/tickets";
+import { Dashboard, Layout, Login, NotFound, RegisterPage } from "./pages";
+import { UserDetailPage, UserListPage, UserProfilePage } from "./pages/users";
 
 function App() {
   return (
@@ -15,14 +16,22 @@ function App() {
         {/* Protected Layout */}
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
+
             <Route path="/" element={<Dashboard />} />
             <Route path="/profile" element={<UserProfilePage />} />
+
             <Route path="/users" >
               <Route index element={<UserListPage />} />
               <Route path=":id" element={<UserDetailPage />} />
             </Route>
-            <Route path="*" element={<NotFound />} />
+
+            <Route path="/tickets" >
+              <Route index element={<TicketList />} />
+              <Route path=":id" element={<TicketDetails />} />
+              <Route path="create" element={<CreateTicket />} />
+            </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

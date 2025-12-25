@@ -17,7 +17,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 import { FormErrorMessage } from "../atoms";
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function LoginForm({
   className,

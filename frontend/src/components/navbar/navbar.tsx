@@ -1,4 +1,4 @@
-import { useAuth } from "@/auth/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import {
     NavigationMenu,
     NavigationMenuList,
@@ -25,7 +25,7 @@ type NavbarMenu = {
 const navbarMenu: NavbarMenu[] = [
     {
         label: "Dashboard",
-        path: '/dashboard',
+        path: '/',
         permission: ['user', 'admin'],
         icon: <House size={16} />,
         position: 'left'
@@ -74,7 +74,7 @@ export default function Navbar() {
         <NavigationMenu className="bg-secondary w-full h-16 px-6 max-w-full">
             <NavigationMenuList className="grid grid-cols-12 items-center w-svw">
                 <h1 className="uppercase col-span-2 px-4 tracking-wider font-bold font-serif">
-                    <Link to='/dashboard'>
+                    <Link to='/'>
                         JIRA CLONE
                     </Link>
                 </h1>

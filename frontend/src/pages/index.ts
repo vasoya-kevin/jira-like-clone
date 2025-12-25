@@ -3,4 +3,4 @@ export { default as Layout } from './layout'
 export { default as Login } from './login'
 export { default as NotFound } from './not-found'
 export { default as RegisterPage } from './register'
-export { default as UserListPage } from './users/user-list-page'
+export { default as Dashboard } from './dashboard';
