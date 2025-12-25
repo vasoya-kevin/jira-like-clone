@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, Layout, Login, NotFound } from "./pages";
+import { Home, Layout, Login, NotFound, RegisterPage } from "./pages";
 import { ProtectedRoute } from "@/components";
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
       <Routes>
         {/* Public */}
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* Protected Layout */}
         <Route element={<ProtectedRoute />}>

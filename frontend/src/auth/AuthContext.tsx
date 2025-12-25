@@ -12,6 +12,7 @@ interface authInferace {
     user: User | null,
     loading: boolean,
     login: (email: string, password: string) => void
+    register: (email: string, password: string, userName: string) => void
     logout: () => void;
 }
 
@@ -44,6 +45,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             await loadUser();
             return res.data;
         } catch (err: any) {
+            console.log('err: ', err);
+            throw err.response?.data?.message || "Login failed";
+        }
+    };
+
+    const register = async (email: string, password: string, userName: string, role: string = 'user') => {
+        try {
+            const res = await ApiInstance.post("/auth/register", { email, password, userName, role });
+            localStorage.setItem("token", res.data.token);
+            await loadUser();
+            return res.data;
+        } catch (err: any) {
+            console.log('err: ', err);
             throw err.response?.data?.message || "Login failed";
         }
     };
@@ -54,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, register }}>
             {children}
         </AuthContext.Provider>
     );

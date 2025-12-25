@@ -13,9 +13,9 @@ const ErrorMessage = ({
     className
 }: ErrorMessageProps) => {
     const error = errors[name as keyof typeof errors];
-    console.log('message: ', error);
+
     return (
-        <p className={cn('text-red-500 font-sans text-sm', className)}>{error?.message}</p>
+        <p className={cn('text-red-500 font-sans text-xs', className)}>{error?.message}</p>
     )
 }
 

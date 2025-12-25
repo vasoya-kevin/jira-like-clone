@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,14 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { useAuth } from "@/auth/AuthContext";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import ErrorMessage from "../atoms/error-message/error-message";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+
+import { cn } from "@/lib/utils";
+import { FormErrorMessage } from "../atoms";
+import { useAuth } from "@/auth/AuthContext";
 
 export default function LoginForm({
   className,
@@ -49,7 +52,7 @@ export default function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="py-8 rounded-sm">
+      <Card className="py-12 rounded-sm">
 
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -80,7 +83,7 @@ export default function LoginForm({
                   })}
                 />
                 {errors["email"] && (
-                  <ErrorMessage name="email" errors={errors} />
+                  <FormErrorMessage name="email" errors={errors} />
                 )}
               </Field>
 
@@ -103,7 +106,7 @@ export default function LoginForm({
                   })}
                 />
                 {errors["password"] && (
-                  <ErrorMessage name="password" errors={errors} />
+                  <FormErrorMessage name="password" errors={errors} />
                 )}
               </Field>
 
@@ -121,6 +124,14 @@ export default function LoginForm({
                   </p>
                 )}
               </Field>
+
+              <FieldGroup>
+                <Field>
+                  <FieldDescription className="px-6 text-center">
+                    Already have an account? <Link to='/register'>Sign Up</Link>
+                  </FieldDescription>
+                </Field>
+              </FieldGroup>
 
             </FieldGroup>
           </form>
