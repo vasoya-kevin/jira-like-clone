@@ -20,6 +20,8 @@ export const getAllTickets = async (request, response) => {
         if (search) filter.title = { $regex: search, $options: "i" };
 
         const tickets = await Tickets.find(filter)
+            .populate("assignedTo", "userName email")
+            .populate("createdBy", "userName email")
             .skip((page - 1) * limit)
             .limit(Number(limit))
             .sort({ dueDate: 1 });

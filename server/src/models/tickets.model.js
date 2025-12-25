@@ -27,7 +27,10 @@ export const Tickets = mongoose.model("Tickets", TicketsSchema);
 
 
 export const getTickets = () => Tickets.find();
-export const getTicketById = (id) => Tickets.findById(id);
+export const getTicketById = (id) =>
+    Tickets.findById(id)
+        .populate("assignedTo", "name email")
+        .populate("createdBy", "name email");
 
 // export const getAllTicket = () => Tickets.find();
 // export const getTicketById = (id) => Tickets.findById(id);

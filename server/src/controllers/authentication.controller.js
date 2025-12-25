@@ -69,7 +69,7 @@ const login = async (request, response) => {
 
         if (!user) {
             return response
-                .status(400)
+                .status(404)
                 .json({
                     message: "The user could not be found. Please contact your administrator for access.",
                     status: false,
