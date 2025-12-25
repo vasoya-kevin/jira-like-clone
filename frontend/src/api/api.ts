@@ -3,9 +3,9 @@ import { config } from '../config/config';
 
 const { BASE_URL } = config;
 
-const AxiosInstance = axios.create({ baseURL: BASE_URL });
+export const ApiInstance = axios.create({ baseURL: BASE_URL });
 
-AxiosInstance.interceptors.request.use((config) => {
+ApiInstance.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
 
     if (token) {

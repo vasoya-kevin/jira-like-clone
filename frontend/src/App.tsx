@@ -1,16 +1,24 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Home, Login } from "./pages";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home, Layout, Login, NotFound } from "./pages";
+import { ProtectedRoute } from "@/components";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Public */}
         <Route path="/login" element={<Login />} />
 
+        {/* Protected Layout */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

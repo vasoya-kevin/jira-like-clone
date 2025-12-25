@@ -1,13 +1,12 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
-interface LayoutProps {
-    children: React.ReactNode,
-}
-
-const Layout = ({ children }: LayoutProps) => {
+const Layout = () => {
     return (
-        <main>{children}</main>
-    )
-}
+        <main className="min-h-screen font-sans">
+            {/* later: Navbar, Sidebar */}
+            <Outlet />
+        </main>
+    );
+};
 
-export default Layout
+export default Layout;

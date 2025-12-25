@@ -11,7 +11,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  define: {
-    'process.env': process.env // This makes the *actual* Node.js process.env available during the build
-  }
 })
