@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, Layout, Login, NotFound, RegisterPage } from "./pages";
+import { Layout, Login, NotFound, RegisterPage, UserListPage } from "./pages";
 import { ProtectedRoute } from "@/components";
+import Dashboard from "./pages/dashboard";
+import { UserDetailPage, UserProfilePage } from "./pages/users";
 
 function App() {
   return (
@@ -13,7 +15,12 @@ function App() {
         {/* Protected Layout */}
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/profile" element={<UserProfilePage />} />
+            <Route path="/users" >
+              <Route index element={<UserListPage />} />
+              <Route path=":id" element={<UserDetailPage />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Route>
         </Route>

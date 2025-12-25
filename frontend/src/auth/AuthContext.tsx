@@ -5,7 +5,8 @@ import * as React from 'react';
 interface User {
     id: string,
     email: string,
-    role: 'user' | 'admin'
+    role: 'user' | 'admin',
+    userName: string
 }
 
 interface authInferace {
@@ -25,7 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const loadUser = async () => {
         try {
             const response = await ApiInstance.get('/users/profile');
-            setUser(response.data);
+            setUser(response.data?.user);
         } catch (error) {
             console.log('error: ', error);
             setUser(null);
