@@ -17,7 +17,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
 
-            <Route path="/" element={<Dashboard />} />
+            <Route index path="/" element={<Dashboard />} />
             <Route path="/profile" element={<UserProfilePage />} />
 
             <Route path="/users" >
@@ -27,8 +27,8 @@ function App() {
 
             <Route path="/tickets" >
               <Route index element={<TicketList />} />
+              <Route path="create-ticket" element={<CreateTicket />} />
               <Route path=":id" element={<TicketDetails />} />
-              <Route path="create" element={<CreateTicket />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} />

@@ -63,7 +63,7 @@ const navbarMenu: NavbarMenu[] = [
 export default function Navbar() {
     const { user, logout } = useAuth();
     const { pathname } = useLocation();
-
+    
     const filterMenuBasedOnRole = navbarMenu?.filter((item) => item.permission?.includes(user?.role as any));
 
     const leftMenu = filterMenuBasedOnRole.filter(m => m.position === "left");
@@ -80,30 +80,38 @@ export default function Navbar() {
                 </h1>
                 {/* Left */}
                 <div className="flex gap-6 w-full justify-center col-span-8">
-                    {
-                        leftMenu.map((menu) => {
-                            const active = pathname.indexOf(menu.path) === 0;
-                            return (
-                                < NavigationMenuItem key={menu.path} className={
-                                    clsx("px-4 flex justify-center items-center", {
-                                        "font-bold": active
-                                    })
-                                } >
-                                    {menu.icon}
-                                    <NavigationMenuLink
-                                        href={menu.path}
-                                        className="flex items-center gap-2"
-                                    >
-                                        {menu.label}
-                                    </NavigationMenuLink>
-                                </NavigationMenuItem>
-                            )
-                        })
-                    }
+                    {leftMenu.map((menu) => {
+                        const active =
+                            menu.path === "/"
+                                ? pathname === "/"
+                                : pathname.startsWith(menu.path);
+
+                        return (
+                            <NavigationMenuItem
+                                key={menu.path}
+                                className={clsx(
+                                    "px-4 flex justify-center items-center",
+                                    active ? "font-bold" : "font-normal"
+                                )}
+                            >
+                                {menu.icon}
+                                <NavigationMenuLink
+                                    href={menu.path}
+                                    className="flex items-center gap-2"
+                                >
+                                    {menu.label}
+                                </NavigationMenuLink>
+                            </NavigationMenuItem>
+                        );
+                    })}
+
                 </div>
 
                 {/* Push right side to end */}
-                <div className="flex gap-6 col-span-2 justify-self-end px-4">
+                <div className="flex gap-6 col-span-2 justify-self-end px-4 items-center">
+                    <div className="p-2 bg-zinc-300 rounded-sm text-sm">
+                        {user?.email}
+                    </div>
                     {rightMenu.map((menu) => (
                         <NavigationMenuItem key={menu.path} className="flex justify-center items-center">
                             <Button className="cursor-pointer" onClick={logout}>
