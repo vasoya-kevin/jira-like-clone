@@ -22,7 +22,7 @@ export const getProfile = async (request, response) => {
 
     } catch (error) {
         console.log('error: ', error);
-        return response.status(200).json({ message: 'something went wrong.', status: false, error })
+        return response.status(400).json({ message: 'something went wrong.', status: false, error })
     }
 }
 

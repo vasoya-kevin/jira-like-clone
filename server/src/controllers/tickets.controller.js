@@ -1,4 +1,4 @@
-import { ticketBodyValidator } from "#helpers/tickets.helper.js";
+import { isDateOlderThanToday, ticketBodyValidator } from "#helpers/tickets.helper.js";
 import { getTicketById, getTickets, Tickets } from "#models/tickets.model.js";
 import lodash from "lodash";
 
@@ -56,7 +56,7 @@ export const getTicketsById = async (request, response) => {
 
         if (
             user.role !== "admin" &&
-            ticket.assignedTo.toString() !== user._id.toString()
+            ticket.assignedTo._id.toString() !== user._id.toString()
         ) {
             return response.status(403).json({
                 status: false,
@@ -64,7 +64,7 @@ export const getTicketsById = async (request, response) => {
             });
         }
 
-        return response.status(200).json({ status: true, ticket });
+        return response.status(200).json({ status: true, tickets: ticket });
     } catch (error) {
         console.log("error: ", error);
         return response
@@ -91,14 +91,19 @@ export const createTicket = async (request, response) => {
 
         for (const key of ticketBodyValidator) {
             if (!body.hasOwnProperty(key) || isEmpty(body[key])) {
-                return response.status(400).json({ message: `${key} is missing or empty.` })
+                return response.status(400).json({ message: `${key} is missing or empty.`, status: false })
             }
         }
 
-        const { title, description, assignedTo, dueDate, priority } = body;
+        const { title, description, assignedTo, dueDate, priority, status } = body;
+
+        if (isDateOlderThanToday(dueDate)) {
+            return response.status(400).json({ message: `Due Date should not be older than today.`, status: false });
+        }
 
         const ticket = await Tickets.create({
             title,
+            status,
             description,
             assignedTo,
             dueDate,
@@ -106,7 +111,7 @@ export const createTicket = async (request, response) => {
             createdBy: user._id,
         })
 
-        return response.status(201).json({ ticket, status: true });
+        return response.status(201).json({ tickets: ticket, status: true });
     } catch (error) {
         console.log("error: ", error);
         return response
@@ -120,7 +125,7 @@ export const deleteTicket = async (request, response) => {
         const { params } = request;
 
         if (!params.id) {
-            return response.status(200).json({ status: false, message: 'id is missing.' })
+            return response.status(400).json({ status: false, message: 'id is missing.' })
         }
 
         const { id } = params;
@@ -146,7 +151,7 @@ export const updateTicket = async (request, response) => {
         const { params, body, user } = request;
 
         if (!params.id) {
-            return response.status(200).json({ status: false, message: 'id is missing.' })
+            return response.status(400).json({ status: false, message: 'id is missing.' })
         }
 
         if (isEmpty(body)) {
@@ -161,15 +166,13 @@ export const updateTicket = async (request, response) => {
             return response.status(404).json({ message: "Ticket is not found", status: false });
         }
 
-        console.log(ticket.assignedTo.toString(), user._id?.toString())
-
         if (user.role === "user" && ticket.assignedTo.toString() !== user._id?.toString()) {
             return response.status(403).json({ message: "You are not allowed to update this ticket", status: false });
         }
 
         // Allowed fields
         const USER_ALLOWED = ["status"];
-        const ADMIN_ALLOWED = ["title", "description", "priority", "status", "assignedTo"];
+        const ADMIN_ALLOWED = ["title", "description", "priority", "status", "assignedTo", "dueDate"];
 
         const allowFields = user.role === 'admin' ? ADMIN_ALLOWED : USER_ALLOWED;
 
@@ -185,6 +188,9 @@ export const updateTicket = async (request, response) => {
             return response.status(400).json({ message: 'no valid field are there for update the ticket.', status: false });
         };
 
+        if (data?.dueDate && isDateOlderThanToday(data?.dueDate)) {
+            return response.status(400).json({ message: `Due Date should not be older than today.`, status: false });
+        }
 
         Object.assign(ticket, data);
 
@@ -193,7 +199,7 @@ export const updateTicket = async (request, response) => {
         return response.status(200).json({
             status: true,
             message: "Ticket updated successfully",
-            ticket
+            tickets: ticket
         });
     } catch (error) {
         return response
