@@ -138,6 +138,7 @@ export const TicketProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const response = await ApiInstance.patch(`/tickets/${id}`, ticket);
             dispatch({ type: "PATCH_TICKET", payload: response.data?.tickets })
+            fetchTicketById(id);
             return response;
         } catch (error: any) {
             dispatch({ type: "TICKET_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to load ticket.", status: false, statusCode: error?.status ?? 500 } })

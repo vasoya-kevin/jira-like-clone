@@ -94,9 +94,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({ type: "FETCH_INIT_USER" })
         try {
             const response = await ApiInstance.get(USER_API_PATH)
-            return dispatch({ type: "GET_USERS", payload: response?.data?.users })
+            dispatch({ type: "GET_USERS", payload: response?.data?.users })
+            return response
         } catch (error: any) {
-            dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to get users.", status: false, statusCode: error?.status ?? 500 } })
+            dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to get users.", status: false, statusCode: error?.status ?? 500 } });
+            throw error;
         }
     }
 
@@ -104,9 +106,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({ type: "FETCH_INIT_USER" })
         try {
             const response = await ApiInstance.get(USER_API_PATH + `/${id}`)
-            return dispatch({ type: "FETCH_USERS_BY_ID", payload: response?.data?.user })
+            dispatch({ type: "FETCH_USERS_BY_ID", payload: response?.data?.user })
+            return response
         } catch (error: any) {
             dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to get user.", status: false, statusCode: error?.status ?? 500 } })
+            throw error;
         }
     }
 
@@ -114,9 +118,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({ type: "FETCH_INIT_USER" })
         try {
             const response = await ApiInstance.post(USER_API_PATH, user)
-            return dispatch({ type: "CREATE_USER", payload: response?.data?.user })
+            dispatch({ type: "CREATE_USER", payload: response?.data?.user })
+            return response
         } catch (error: any) {
             dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to create user.", status: false, statusCode: error?.status ?? 500 } })
+            throw error;
         }
     }
 
@@ -124,19 +130,22 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         dispatch({ type: "FETCH_INIT_USER" })
         try {
             const response = await ApiInstance.patch(USER_API_PATH + `/${id}`, user)
-            return dispatch({ type: "PATCH_USER", payload: response?.data?.user })
+            dispatch({ type: "PATCH_USER", payload: response?.data?.user })
+            return response
         } catch (error: any) {
             dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to update user.", status: false, statusCode: error?.status ?? 500 } })
+            throw error;
         }
     }
 
     const deleteUser = async (id: string) => {
         dispatch({ type: "FETCH_INIT_USER" })
         try {
-            const response = await ApiInstance.delete(USER_API_PATH + `/${id}`)
-            return dispatch({ type: "DELETE_USER", payload: id })
+            await ApiInstance.delete(USER_API_PATH + `/${id}`)
+            dispatch({ type: "DELETE_USER", payload: id })
         } catch (error: any) {
             dispatch({ type: "USER_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to delete user.", status: false, statusCode: error?.status ?? 500 } })
+            throw error;
         }
     }
 

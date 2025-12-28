@@ -3,7 +3,7 @@ import { ApiInstance } from '@/api/api';
 import * as React from 'react';
 
 interface User {
-    id: string,
+    _id: string,
     email: string,
     role: 'user' | 'admin',
     userName: string

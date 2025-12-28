@@ -5,9 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-
 export const userRole = ['user', 'admin']
-
 
 export const ticketStatus = {
   'to do': "To Do",
@@ -22,15 +20,15 @@ export const convertDate = (dueDate: string) => {
 }
 
 export const priorityStyles: any = {
-  HIGH: "bg-red-100 text-red-700",
-  MEDIUM: "bg-yellow-100 text-yellow-700",
-  LOW: "bg-green-100 text-green-700",
+  HIGH: "bg-red-500 text-white",
+  MEDIUM: "bg-yellow-400 text-yellow-900",
+  LOW: "bg-emerald-500 text-white",
 };
 
 export const taskStatusStyle: any = {
-  "to do": "bg-stone-400",
-  "in_progress": "bg-sky-600",
-  "done": "bg-emerald-500"
+  "to do": "bg-gray-500",
+  "in_progress": "bg-sky-700",
+  "done": "bg-green-700"
 }
 
 export const commonBadgeStyle = 'mx-auto flex w-fit items-center gap-1 rounded-sm px-3 py-1 text-xs font-medium'

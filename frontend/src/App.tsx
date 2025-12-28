@@ -3,7 +3,7 @@ import { ProtectedRoute } from "@/components";
 
 import { CreateTicket, TicketDetails, TicketList } from "./pages/tickets";
 import { Dashboard, Layout, Login, NotFound, RegisterPage } from "./pages";
-import { UserDetailPage, UserListPage, UserProfilePage } from "./pages/users";
+import { CreateUser, UserListPage, UserProfilePage } from "./pages/users";
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
 
             <Route path="/users" >
               <Route index element={<UserListPage />} />
-              <Route path=":id" element={<UserDetailPage />} />
+              <Route path="create-user" element={<CreateUser />} />
             </Route>
 
             <Route path="/tickets" >

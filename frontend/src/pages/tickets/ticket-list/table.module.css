@@ -1,0 +1,9 @@
+ @reference "@/styles/globals.css";
+
+.table-head {
+  @apply text-white border border-accent font-semibold text-center;
+}
+
+.border-primary-capitialize {
+    @apply border border-primary capitalize;
+}

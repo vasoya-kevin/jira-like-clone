@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FieldLabel } from '@/components/ui/field';
 import ErrorMessage from '@/components/atoms/error-message';
-import { convertDate } from '@/lib/utils';
+// import { convertDate } from '@/lib/utils';
 import { Loading } from '@/components';
 
 type CreateTaskForm = {
@@ -44,7 +44,7 @@ const CreateTicket = () => {
   });
 
   useEffect(() => {
-    if ((!user) || user?.role === "user") {
+    if (!user) {
       navigate("/");
     }
     fetchUsers();
@@ -53,6 +53,7 @@ const CreateTicket = () => {
   const handleTicketCreation = handleSubmit(async (data: CreateTaskForm) => {
     try {
       const response = await createTicket(data as any);
+      console.log('response: ', response);
       navigate('/tickets')
     } catch (error) {
       console.log('error: ', error);

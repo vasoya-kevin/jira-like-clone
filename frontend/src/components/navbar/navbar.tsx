@@ -5,10 +5,11 @@ import {
     NavigationMenuItem,
     NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import { ClipboardList, House, LogOut, Ticket, User, UserPen } from "lucide-react";
+import { ClipboardList, House, LogOut, User, UserPen } from "lucide-react";
 import { Button } from "../ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import clsx from "clsx";
+import Logo from "../logo";
 
 type UserRole = "user" | "admin";
 type positions = "left" | "right";
@@ -63,7 +64,7 @@ const navbarMenu: NavbarMenu[] = [
 export default function Navbar() {
     const { user, logout } = useAuth();
     const { pathname } = useLocation();
-    
+
     const filterMenuBasedOnRole = navbarMenu?.filter((item) => item.permission?.includes(user?.role as any));
 
     const leftMenu = filterMenuBasedOnRole.filter(m => m.position === "left");
@@ -73,11 +74,7 @@ export default function Navbar() {
     return (
         <NavigationMenu className="bg-secondary w-full h-16 px-6 max-w-full">
             <NavigationMenuList className="grid grid-cols-12 items-center w-svw">
-                <h1 className="uppercase col-span-2 px-4 tracking-wider font-bold font-serif">
-                    <Link to='/'>
-                        JIRA CLONE
-                    </Link>
-                </h1>
+                <Logo />
                 {/* Left */}
                 <div className="flex gap-6 w-full justify-center col-span-8">
                     {leftMenu.map((menu) => {
