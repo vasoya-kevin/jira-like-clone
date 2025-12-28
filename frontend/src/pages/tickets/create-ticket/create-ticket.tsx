@@ -16,6 +16,7 @@ import { FieldLabel } from '@/components/ui/field';
 import ErrorMessage from '@/components/atoms/error-message';
 // import { convertDate } from '@/lib/utils';
 import { Loading } from '@/components';
+import { TicketPriority, TicketStatus } from '@/lib/utils';
 
 type CreateTaskForm = {
   title: string
@@ -117,9 +118,11 @@ const CreateTicket = () => {
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="TO DO">To Do</SelectItem>
-                      <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                      <SelectItem value="DONE">Done</SelectItem>
+                      {
+                        TicketStatus?.map((status) => (
+                          <SelectItem key={status?.value} value={status?.value}>{status?.label}</SelectItem>
+                        ))
+                      }
                     </SelectContent>
                   </Select>
                 )}
@@ -140,9 +143,11 @@ const CreateTicket = () => {
                       <SelectValue placeholder="Select priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="LOW">Low</SelectItem>
-                      <SelectItem value="MEDIUM">Medium</SelectItem>
-                      <SelectItem value="HIGH">High</SelectItem>
+                      {
+                        TicketPriority?.map((priority) => (
+                          <SelectItem  key={priority?.value} value={priority?.value}>{priority?.label}</SelectItem>
+                        ))
+                      }
                     </SelectContent>
                   </Select>
                 )}

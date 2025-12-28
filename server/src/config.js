@@ -1,10 +1,26 @@
 const ENVIRONMENTS = process.env;
 
+export const ROLES = {
+  ADMIN: 'admin',
+  USER: 'user'
+}
+
 export const PERMISSIONS = {
   CREATE: 'create',
   READ: 'read',
   UPDATE: 'update',
   DELETE: 'delete'
+}
+
+export const ROLE_BASED_PERMISSION = {
+  'users': {
+    admin: [PERMISSIONS.CREATE, PERMISSIONS.READ, PERMISSIONS.UPDATE, PERMISSIONS.DELETE],
+    user: [PERMISSIONS.READ]
+  },
+  'tickets': {
+    admin: Object.values(PERMISSIONS),
+    user: Object.values(PERMISSIONS)
+  }
 }
 
 const ADMIN_ACCESS = Object.values(PERMISSIONS);
@@ -24,5 +40,6 @@ export const SERVER_CONFIG = {
       access: USER_ACCESS,
     },
   },
+  ROLE_BASED_PERMISSION
 
 };

@@ -7,7 +7,7 @@ import { TicketProvider } from './context/TicketContext.tsx'
 import { UserProvider } from './context/UserContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  // <StrictMode>
     <AuthProvider>
       <UserProvider>
         <TicketProvider>
@@ -15,5 +15,5 @@ createRoot(document.getElementById('root')!).render(
         </TicketProvider>
       </UserProvider>
     </AuthProvider>
-  </StrictMode>,
+  // </StrictMode>
 )

@@ -5,7 +5,6 @@ import * as dotenv from "dotenv";
 import bodyParser from "body-parser";
 import compression from "compression";
 import cookieParser from "cookie-parser";
-
 import { SERVER_CONFIG } from "#config.js";
 import router from "#router/routes.js";
 import { connectDB } from "#database/connection.js";

@@ -73,7 +73,7 @@ export default function Navbar() {
 
     return (
         <NavigationMenu className="bg-secondary w-full h-16 px-6 max-w-full">
-            <NavigationMenuList className="grid grid-cols-12 items-center w-svw">
+            <NavigationMenuList className="grid grid-cols-12 items-center w-full">
                 <Logo />
                 {/* Left */}
                 <div className="flex gap-6 w-full justify-center col-span-8">
@@ -106,9 +106,6 @@ export default function Navbar() {
 
                 {/* Push right side to end */}
                 <div className="flex gap-6 col-span-2 justify-self-end px-4 items-center">
-                    <div className="p-2 bg-zinc-300 rounded-sm text-sm">
-                        {user?.email}
-                    </div>
                     {rightMenu.map((menu) => (
                         <NavigationMenuItem key={menu.path} className="flex justify-center items-center">
                             <Button className="cursor-pointer" onClick={logout}>

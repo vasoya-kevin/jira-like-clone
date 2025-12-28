@@ -1,3 +1,4 @@
+import type { TicketFilters } from "@/context/TicketContext"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -31,4 +32,45 @@ export const taskStatusStyle: any = {
   "done": "bg-green-700"
 }
 
+export const buildTaskQuery = (filters: TicketFilters) => {
+  const params = new URLSearchParams();
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) params.append(key, String(value))
+  })
+
+  return params.toString()
+}
+
+
 export const commonBadgeStyle = 'mx-auto flex w-fit items-center gap-1 rounded-sm px-3 py-1 text-xs font-medium'
+
+export const TicketStatus = [
+  {
+    label: 'To Do',
+    value: 'TO DO'
+  },
+  {
+    label: 'In Progress',
+    value: 'IN_PROGRESS'
+  },
+  {
+    label: 'Done',
+    value: 'DONE'
+  },
+]
+
+export const TicketPriority = [
+  {
+    label: 'High',
+    value: 'HIGH'
+  },
+  {
+    label: 'Medium',
+    value: 'MEDIUM'
+  },
+  {
+    label: 'Low',
+    value: 'LOW'
+  }
+]

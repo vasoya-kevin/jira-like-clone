@@ -1,4 +1,5 @@
 import { ApiInstance } from '@/api/api';
+import { buildTaskQuery } from '@/lib/utils';
 import { createContext, useContext, useReducer } from 'react';
 
 export type TASK_STATUS = 'TO DO' | 'IN_PROGRESS' | 'DONE';
@@ -30,11 +31,28 @@ export type ticketState = {
     tickets: TICKET[],
     ticketById: TICKET | null
     loading: boolean,
-    error: Error | null
+    error: Error | null,
+    meta: TicketMeta | null
+}
+
+export type TicketFilters = {
+    assignee: string | undefined;
+    page?: number
+    limit?: number
+    search?: string
+    status?: TASK_STATUS | string
+    priority?: TICKET_PRIORITY | string
+}
+
+export type TicketMeta = {
+    total: number
+    page: number
+    pages: number
+    limit: number
 }
 
 export type ticketActions = { type: "FETCH_INIT" }
-    | { type: "FETCH_TICKETS", payload: TICKET[] }
+    | { type: "FETCH_TICKETS", payload: { tickets: TICKET[], meta: TicketMeta } }
     | { type: "TICKET_FETCH_ERROR", payload: Error }
     | { type: "CREATE_TICKET", payload: TICKET }
     | { type: "FETCH_TICKET_BY_ID", payload: TICKET }
@@ -48,7 +66,7 @@ export function ticketReducer(state: ticketState, action: ticketActions): ticket
             return { ...state, loading: true };
 
         case 'FETCH_TICKETS': {
-            return { ...state, tickets: action.payload, loading: false, error: null }
+            return { ...state, tickets: action.payload.tickets, meta: action.payload.meta, loading: false, error: null }
         }
 
         case 'FETCH_TICKET_BY_ID': {
@@ -80,7 +98,7 @@ export function ticketReducer(state: ticketState, action: ticketActions): ticket
 }
 
 export type ticketContextType = ticketState & {
-    fetchTickets: () => void
+    fetchTickets: (filters: TicketFilters) => void
     fetchTicketById: (id: string) => void
     createTicket: (ticket: TICKET) => void
     updateTicket: (id: string, ticket: TICKET) => void
@@ -91,18 +109,33 @@ export const initialTicketState: ticketState = {
     tickets: [],
     ticketById: null,
     loading: false,
-    error: null
+    error: null,
+    meta: {
+        total: 0,
+        page: 1,
+        pages: 1,
+        limit: 10
+    }
 }
 
 export const TicketContext = createContext<ticketContextType | null>(null);
 export const TicketProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(ticketReducer, initialTicketState);
 
-    const fetchTickets = async () => {
+    const fetchTickets = async (filters: TicketFilters) => {
         dispatch({ type: "FETCH_INIT" });
         try {
-            const response = await ApiInstance.get('/tickets');
-            dispatch({ type: "FETCH_TICKETS", payload: response.data?.tickets })
+            const query = filters ? buildTaskQuery(filters) : '';
+            const response = await ApiInstance.get(`/tickets?${query}`);
+
+            dispatch({
+                type: "FETCH_TICKETS",
+                payload: {
+                    tickets: response?.data?.tickets,
+                    meta: response?.data?.meta,
+                },
+            })
+            // dispatch({ type: "FETCH_TICKETS", payload: response.data?.tickets })
         } catch (error: any) {
             dispatch({ type: "TICKET_FETCH_ERROR", payload: { message: error?.response?.data?.message || "Failed to load tickets", status: false, statusCode: error?.status ?? 500 } })
         }

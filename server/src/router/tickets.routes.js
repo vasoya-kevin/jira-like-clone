@@ -7,35 +7,16 @@ import { createTicket, deleteTicket, getAllTickets, updateTicket, getTicketsById
 const { CREATE, DELETE, READ, UPDATE } = PERMISSIONS;
 
 const ticketRoutes = Router();
+const routePath = "tickets";
 
-// ticketRoutes.get("/", checkPermission(READ),  (request, response) => {
-//   return response.status(200).send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+ticketRoutes.get("/", checkPermission(routePath, READ), getAllTickets);
 
-// ticketRoutes.get("/:id", checkPermission(READ),  (request, response) => {
-//   return response.status(200).send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+ticketRoutes.get("/:id", checkPermission(routePath, READ), getTicketsById);
 
-// ticketRoutes.post("/", checkPermission(CREATE),  (request, response) => {
-//   return response.status(200).send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+ticketRoutes.post("/", checkPermission(routePath, CREATE), createTicket);
 
-// ticketRoutes.patch("/:id", checkPermission(UPDATE),  (request, response) => {
-//   return response.status(200).send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+ticketRoutes.patch("/:id", checkPermission(routePath, UPDATE), updateTicket);
 
-// ticketRoutes.delete("/:id", checkPermission(DELETE),  (request, response) => {
-//   return response.status(200).send(`you are "${request.originalUrl}" are currently on this path`);
-// });
-
-ticketRoutes.get("/", checkPermission(READ), getAllTickets);
-
-ticketRoutes.get("/:id", checkPermission(READ), getTicketsById);
-
-ticketRoutes.post("/", checkPermission(CREATE), createTicket);
-
-ticketRoutes.patch("/:id", checkPermission(UPDATE), updateTicket);
-
-ticketRoutes.delete("/:id", checkPermission(DELETE), deleteTicket);
+ticketRoutes.delete("/:id", checkPermission(routePath, DELETE), deleteTicket);
 
 export default ticketRoutes;

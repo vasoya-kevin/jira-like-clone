@@ -2,7 +2,7 @@ import { verifyJWTToken } from "#helpers/authentication.helper.js";
 import { getUserById } from "#models/users.model.js";
 import { SERVER_CONFIG } from "#config.js";
 
-const { roles } = SERVER_CONFIG;
+const { ROLE_BASED_PERMISSION } = SERVER_CONFIG;
 
 export const authenticate = async (request, response, next) => {
     try {
@@ -37,22 +37,22 @@ export const authenticate = async (request, response, next) => {
     }
 }
 
-export const checkPermission = (permission) => {
+export const checkPermission = (routePath, permission) => {
     return (request, response, next) => {
         try {
             const user = request?.user;
 
-            if (!request.user) {
+            if (!user) {
                 return response.status(401).json({
                     message: 'Unauthorized',
                     status: false
                 });
-            }
+            };
 
             const userRole = user?.role?.toLowerCase();
 
-            const getRoleConfig = roles[userRole];
-            const access = getRoleConfig?.access;
+            const getRoleConfig = ROLE_BASED_PERMISSION[routePath ?? 'users'];
+            const access = getRoleConfig?.[userRole]
 
             if (!access?.includes(permission)) {
                 return response.status(403).json({ message: `Forbidden.` });

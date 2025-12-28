@@ -6,45 +6,16 @@ import { PERMISSIONS } from "#config.js";
 const { CREATE, DELETE, READ, UPDATE } = PERMISSIONS;
 
 const userRoutes = Router();
+const routePath = 'users'
 
-// userRoutes.get("/", checkPermission(READ), (request, response) => {
-//   return response
-//     .status(200)
-//     .send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+userRoutes.get("/", checkPermission(routePath, READ), getAllUsers);
+userRoutes.get("/profile", checkPermission(routePath, READ), getProfile);
 
-// userRoutes.get("/:id", checkPermission(READ), (request, response) => {
-//   return response
-//     .status(200)
-//     .send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+userRoutes.post("/", checkPermission(routePath, CREATE), createUserByAdmin);
 
-// userRoutes.post("/", checkPermission(CREATE), (request, response) => {
-//   return response
-//     .status(200)
-//     .send(`you are "${request.originalUrl}" are currently on this path`);
-// });
+userRoutes.patch("/:id", checkPermission(routePath, UPDATE), checkOwnershipOrAdmin, updateUserByAdmin);
 
-// userRoutes.patch("/:id", checkPermission(UPDATE), checkOwnershipOrAdmin, (request, response) => {
-//   return response
-//     .status(200)
-//     .send(`you are "${request.originalUrl}" are currently on this path`);
-// });
-
-// userRoutes.delete("/:id", checkPermission(DELETE), (request, response) => {
-//   return response
-//     .status(200)
-//     .send(`you are "${request.originalUrl}" are currently on this path`);
-// });
-
-userRoutes.get("/", checkPermission(READ), getAllUsers);
-userRoutes.get("/profile", checkPermission(READ), getProfile);
-
-userRoutes.post("/", checkPermission(CREATE), createUserByAdmin);
-
-userRoutes.patch("/:id", checkPermission(UPDATE), checkOwnershipOrAdmin, updateUserByAdmin);
-
-userRoutes.delete("/:id", checkPermission(DELETE), checkOwnershipOrAdmin, deleteUserByAdmin);
+userRoutes.delete("/:id", checkPermission(routePath, DELETE), checkOwnershipOrAdmin, deleteUserByAdmin);
 
 
 export default userRoutes;

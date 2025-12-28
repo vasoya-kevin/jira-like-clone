@@ -7,7 +7,7 @@ const { isEmpty } = lodash;
 export const getAllTickets = async (request, response) => {
     try {
         const { user } = request;
-        const { page = 1, limit = 10, status, priority, search } = request.query;
+        const { page = 1, limit = 10, status, priority, search, assignee } = request.query;
 
         const filter = {};
 
@@ -16,17 +16,31 @@ export const getAllTickets = async (request, response) => {
         if (status) filter.status = status;
 
         if (priority) filter.priority = priority;
+        if (assignee) filter.assignedTo = assignee;
 
         if (search) filter.title = { $regex: search, $options: "i" };
 
-        const tickets = await Tickets.find(filter)
-            .populate("assignedTo", "userName email")
-            .populate("createdBy", "userName email")
-            .skip((page - 1) * limit)
-            .limit(Number(limit))
-            .sort({ dueDate: 1 });
+        const [tickets, total] = await Promise.all([
+            Tickets.find(filter)
+                .populate("assignedTo", "userName email")
+                .populate("createdBy", "userName email")
+                .sort({ createdAt: -1, dueDate: 1 })
+                .skip((page - 1) * limit)
+                .limit(Number(limit)),
 
-        response.status(200).json({ page, limit, tickets, status: true });
+            Tickets.countDocuments(filter)
+        ])
+
+        response.status(200).json({
+            status: true,
+            tickets,
+            meta: {
+                total,
+                page: Number(page),
+                limit: Number(limit),
+                pages: Math.ceil(total / limit)
+            }
+        })
     } catch (error) {
         console.log("error: ", error);
         return response

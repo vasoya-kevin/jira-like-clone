@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useTicket, type TICKET } from "@/context/TicketContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { priorityStyles, taskStatusStyle } from "@/lib/utils";
+import { priorityStyles, taskStatusStyle, TicketPriority, TicketStatus } from "@/lib/utils";
 import { useForm, Controller } from "react-hook-form";
 import {
   Select,
@@ -21,6 +21,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Label } from "@/components/ui/label";
+import { DeleteModal } from "@/components/modals";
+import { DialogClose } from "@/components/ui/dialog";
 interface TicketViewProps {
   onBack?: () => void;
 }
@@ -207,9 +209,11 @@ const TicketView: React.FC<TicketViewProps> = () => {
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="TO DO">To Do</SelectItem>
-                          <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
-                          <SelectItem value="DONE">Done</SelectItem>
+                          {
+                            TicketStatus?.map((status) => (
+                              <SelectItem key={status?.value} value={status?.value}>{status?.label}</SelectItem>
+                            ))
+                          }
                         </SelectContent>
                       </Select>
                     )}
@@ -235,13 +239,17 @@ const TicketView: React.FC<TicketViewProps> = () => {
                       rules={{ required: "Priority is required" }}
                       render={({ field }) => (
                         <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger className="h-11">
+                          <SelectTrigger className="h-11 text-primary">
                             <SelectValue placeholder="Select priority" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="LOW">Low</SelectItem>
-                            <SelectItem value="MEDIUM">Medium</SelectItem>
-                            <SelectItem value="HIGH">High</SelectItem>
+                            <SelectContent>
+                              {
+                                TicketPriority?.map((priority) => (
+                                  <SelectItem key={priority?.value} value={priority?.value}>{priority?.label}</SelectItem>
+                                ))
+                              }
+                            </SelectContent>
                           </SelectContent>
                         </Select>
                       )}
@@ -276,24 +284,37 @@ const TicketView: React.FC<TicketViewProps> = () => {
 
               </div>
             </div>
-            <div className="mt-4 flex justify-between items-center">
-              <Button
-                onClick={() => navigate(-1)}
-                className="cursor-pointer bg-gray-800 hover:bg-gray-900 text-white"
+            <div className="mt-4 flex justify-between items-center ml-auto">
+              <DeleteModal
+                trigger={'Delete'}
+                triggerClassName="bg-destructive px-4 py-2 rounded-sm text-white cursor-pointer"
               >
-                Back
-              </Button>
-              {isAdmin && (
-                <Button
-                  onClick={() => {
-                    deleteTicket(id!);
-                    navigate("/tickets");
-                  }}
-                  variant="destructive"
-                >
-                  <Trash /> Delete Ticket
-                </Button>
-              )}
+                <div className="flex justify-end gap-2">
+                  <DialogClose asChild>
+                    <Button variant="ghost" size="sm">
+                      Cancel
+                    </Button>
+                  </DialogClose>
+
+                  <Button
+                    onClick={() => navigate(-1)}
+                    className="cursor-pointer bg-gray-800 hover:bg-gray-900 text-white"
+                  >
+                    Back
+                  </Button>
+                  {isAdmin && (
+                    <Button
+                      onClick={() => {
+                        deleteTicket(id!);
+                        navigate("/tickets");
+                      }}
+                      variant="destructive"
+                    >
+                      <Trash /> Delete Ticket
+                    </Button>
+                  )}
+                </div>
+              </DeleteModal>
             </div>
           </CardContent>
         </Card>
