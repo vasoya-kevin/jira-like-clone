@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/pagination";
 import s from './table.module.css'
 
-import { useTicket, type TICKET, type TicketFilters } from "@/context/TicketContext";
+import { initialTicketState, useTicket, type TICKET, type TicketFilters } from "@/context/TicketContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, Equal, PlusIcon } from "lucide-react";
@@ -89,8 +89,8 @@ const TicketList = () => {
     };
 
     const resetFilter = () => {
-        setFilter(initalFilterState)
-        fetchTickets(filter)
+        setFilter(initalFilterState);
+        fetchTickets(initalFilterState);
     }
 
     const totalPages = meta?.pages ?? 0
@@ -274,64 +274,66 @@ const TicketList = () => {
                                 ))}
                             </TableBody>
                         </Table>
-                        <Pagination>
-                            <PaginationContent>
+                        {
+                            tickets?.length > 0 &&
+                            <Pagination>
+                                <PaginationContent>
 
-                                {/* Previous */}
-                                <PaginationItem>
-                                    <PaginationPrevious
-                                        onClick={() =>
-                                            canGoPrev &&
-                                            setFilter((prev) => ({
-                                                ...prev,
-                                                page: prev.page as number - 1,
-                                            }))
-                                        }
-                                        aria-disabled={!canGoPrev}
-                                        className={!canGoPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                                    />
-                                </PaginationItem>
+                                    {/* Previous */}
+                                    <PaginationItem>
+                                        <PaginationPrevious
+                                            onClick={() =>
+                                                canGoPrev &&
+                                                setFilter((prev) => ({
+                                                    ...prev,
+                                                    page: prev.page as number - 1,
+                                                }))
+                                            }
+                                            aria-disabled={!canGoPrev}
+                                            className={!canGoPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                        />
+                                    </PaginationItem>
 
-                                {/* Page numbers */}
-                                {Array.from({ length: meta?.pages ?? 0 }).map((_, index) => {
-                                    const page = index + 1;
+                                    {/* Page numbers */}
+                                    {Array.from({ length: meta?.pages ?? 0 }).map((_, index) => {
+                                        const page = index + 1;
 
-                                    return (
-                                        <PaginationItem key={page}>
-                                            <PaginationLink
-                                                isActive={page === meta?.page}
-                                                onClick={() =>
-                                                    setFilter((prev) => ({
-                                                        ...prev,
-                                                        page,
-                                                    }))
-                                                }
-                                                className="cursor-pointer"
-                                            >
-                                                {page}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    );
-                                })}
+                                        return (
+                                            <PaginationItem key={page}>
+                                                <PaginationLink
+                                                    isActive={page === meta?.page}
+                                                    onClick={() =>
+                                                        setFilter((prev) => ({
+                                                            ...prev,
+                                                            page,
+                                                        }))
+                                                    }
+                                                    className="cursor-pointer"
+                                                >
+                                                    {page}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                        );
+                                    })}
 
-                                {/* Next */}
-                                <PaginationItem>
-                                    <PaginationNext
-                                        onClick={() =>
-                                            canGoNext &&
-                                            setFilter((prev) => ({
-                                                ...prev,
-                                                page: prev.page as number + 1,
-                                            }))
-                                        }
-                                        aria-disabled={!canGoNext}
-                                        className={!canGoNext ? "pointer-events-none opacity-50" : "cursor-pointer"}
-                                    />
-                                </PaginationItem>
+                                    {/* Next */}
+                                    <PaginationItem>
+                                        <PaginationNext
+                                            onClick={() =>
+                                                canGoNext &&
+                                                setFilter((prev) => ({
+                                                    ...prev,
+                                                    page: prev.page as number + 1,
+                                                }))
+                                            }
+                                            aria-disabled={!canGoNext}
+                                            className={!canGoNext ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                                        />
+                                    </PaginationItem>
 
-                            </PaginationContent>
-                        </Pagination>
-
+                                </PaginationContent>
+                            </Pagination>
+                        }
                     </>
             }
             {

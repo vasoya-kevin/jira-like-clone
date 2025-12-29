@@ -1,13 +1,13 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+// import { TrendingUp } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
 import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
+    // CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
@@ -19,14 +19,6 @@ import {
 } from "@/components/ui/chart"
 
 export const description = "A pie chart with no separator"
-
-const chartData = [
-    { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-    { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-    { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-    { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
 
 const chartConfig = {
     visitors: {
@@ -54,12 +46,16 @@ const chartConfig = {
     },
 } satisfies ChartConfig
 
-export function ChartPieSeparatorNone() {
+interface PieChartProps {
+    chartData: any[], cardTitle: string, cardDescription: string, dataKey: string, nameKey: string
+}
+
+export function ChartPieSeparatorNone({ chartData, cardTitle, cardDescription, dataKey, nameKey }: PieChartProps) {
     return (
         <Card className="flex flex-col">
             <CardHeader className="items-center pb-0">
-                <CardTitle>Pie Chart - Separator None</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardTitle>{cardTitle}</CardTitle>
+                <CardDescription>{cardDescription}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer
@@ -73,9 +69,9 @@ export function ChartPieSeparatorNone() {
                         />
                         <Pie
                             data={chartData}
-                            dataKey="visitors"
-                            nameKey="browser"
-                            stroke="0"
+                            dataKey={dataKey}
+                            nameKey={nameKey}
+                            stroke="1"
                         />
                     </PieChart>
                 </ChartContainer>

@@ -73,9 +73,10 @@ export default function LoginForm({
                   type="email"
                   placeholder="Enter Your Email"
                   {...register("email", {
-                    required: {
-                      value: true,
-                      message: "Email is required.",
+                    required: "Email is required.",
+                    pattern: {
+                      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                      message: "Please enter a valid email address.",
                     },
                   })}
                   className={clsx({
@@ -99,9 +100,16 @@ export default function LoginForm({
                     "border-red-500": errors["password"],
                   })}
                   {...register("password", {
-                    required: {
-                      value: true,
-                      message: "Password is required.",
+                    required: "Password is required.",
+                    minLength: {
+                      value: 8,
+                      message: 'A minimum of 8 characters is required.'
+                    },
+                    pattern: {
+                      value:
+                        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                      message:
+                        "A minimum of 8 characters is required, including at least one letter, one number, and one special character.",
                     },
                   })}
                 />
