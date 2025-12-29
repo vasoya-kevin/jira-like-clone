@@ -108,7 +108,7 @@ export const updateUserByAdmin = async (request, response) => {
 
         for (const key in body) {
             if (key === "password") {
-                user.password = await createHashedPassword(password)
+                user.password = await createHashedPassword(body[key])
             } else if (key === "email") {
                 return response
                     .status(403)
