@@ -1,69 +1,88 @@
-📁 Project Structure
-text
+# Full Stack Application
+
+This repository contains **both the frontend and backend (server)** required to run the application locally.
+
+---
+
+## 📁 Project Structure
 
 root/
 ├── frontend/ # Frontend application
-├── server/ # Backend API server
-└── README.md
-🛠️ Prerequisites
-Before you begin, ensure you have the following installed:
+├── server/ # Backend / API server
+└── README.mdx
 
-Requirement Version
-Node.js 22.21.1
-pnpm Latest
-🚀 Getting Started
+---
 
-1. Clone the Repository
-   Bash
+## ✅ Prerequisites
 
-git clone <repository-url>
-cd <project-folder> 2. Install Dependencies
-Frontend:
+Make sure the following tools are installed before starting:
 
-Bash
+- **Node.js**: `v22.21.1`
+- **pnpm**: Package manager used for both frontend and server
 
+### Install pnpm globally (if not installed)
+
+```bash
+npm install -g pnpm
+```
+
+1️⃣ Install Dependencies
+
+Install dependencies separately for both frontend and server.
+
+Frontend
 cd frontend
 pnpm install
-Server:
 
-Bash
-
+Server
 cd server
-pnpm install 3. Environment Configuration
-Create a .env file in the server root directory:
+pnpm install
 
-env
+Environment Variables
 
-PORT=9090
-MONGOOSE_URL=<your-mongodb-connection-string>
-MONGOOSE_PASSWORD=<your-database-password>
-MONGOOSE_USER_NAME=<your-database-username>
-SECRET_KEY=<your-secret-key>
-ENVIRONMENT="development"
-⚠️ Security Note: Never commit .env files to version control. Add .env to your .gitignore file.
+Create a .env file inside the server root directory.
 
-4. Run the Application
-   Start the server:
+Example folder structure:
 
-Bash
+server/
+├── src/
+├── .env
+├── package.json
 
-cd server
+Add the required environment variables (such as database configuration, secrets, and ports) inside the .env file.
+
+```PORT=9090 
+    MONGOOSE_URL=mongodb+srv://vasoyastar_db_user:WlBPzDA8zfNzGnI2@cluster0.aovscxn.mongodb.net/?appName=Cluster0 
+    MONGOOSE_PASSWORD=WlBPzDA8zfNzGnI2 
+    MONGOOSE_USER_NAME=vasoyastar_db_user 
+    SECRET_KEY=KEVIN_VASOYA@2025 
+    ENVIRONMENT="development"```
+
+⚠️ Important:
+Do NOT commit the .env file to version control.
+
+3️⃣ Run the Application
+
+Start the development servers:
+
 pnpm run dev
-Start the frontend:
 
-Bash
+You may need to run this command separately in both frontend and server directories depending on project configuration.
 
-cd frontend
-pnpm run dev
 🌐 Application URLs
-Service URL
-Frontend http://localhost:1611
-Server http://localhost:9090
-📝 Environment Variables Reference
-Variable Description
-PORT Server port number
-MONGOOSE_URL MongoDB connection string
-MONGOOSE_PASSWORD MongoDB password
-MONGOOSE_USER_NAME MongoDB username
-SECRET_KEY JWT/encryption secret key
-ENVIRONMENT App environment (development/production)
+
+Once running, the application will be available at:
+
+Frontend: http://localhost:1611
+
+Backend (API Server): http://localhost:9090
+
+🛠 Tech Stack
+
+Frontend: JavaScript / TypeScript
+
+Backend: Node.js
+
+Package Manager: pnpm
+
+Environment Management: dotenv
