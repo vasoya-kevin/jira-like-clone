@@ -44,10 +44,11 @@ Create a .env file inside the server root directory.
 
 Example folder structure:
 
-server/
-├── src/
-├── .env
-├── package.json
+```text
+root/
+├── frontend/     # Frontend application
+├── server/       # Backend / API server
+└── README.mdx
 
 Add the required environment variables (such as database configuration, secrets, and ports) inside the .env file.
 
