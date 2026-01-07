@@ -70,7 +70,7 @@ export function ticketReducer(state: ticketState, action: ticketActions): ticket
         }
 
         case 'FETCH_TICKET_BY_ID': {
-            return { ...state, ticketById: action.payload, loading: false }
+            return { ...state, ticketById: action.payload, loading: false, error: null }
         }
 
         case 'TICKET_FETCH_ERROR': {
@@ -78,11 +78,11 @@ export function ticketReducer(state: ticketState, action: ticketActions): ticket
         }
 
         case 'CREATE_TICKET': {
-            return { ...state, loading: false, tickets: [action.payload, ...state.tickets] }
+            return { ...state, loading: false, tickets: [action.payload, ...state.tickets], error: null }
         }
 
         case 'PATCH_TICKET': {
-            return { ...state, loading: false, tickets: state.tickets.map((ticket) => ticket._id === action.payload._id ? action.payload : ticket) }
+            return { ...state, loading: false, tickets: state.tickets.map((ticket) => ticket._id === action.payload._id ? action.payload : ticket), error: null }
         }
 
         case "DELETE_TICKET":
@@ -90,6 +90,7 @@ export function ticketReducer(state: ticketState, action: ticketActions): ticket
                 ...state,
                 loading: false,
                 tickets: state.tickets.filter((t) => t._id !== action.payload),
+                error: null
             }
 
         default:

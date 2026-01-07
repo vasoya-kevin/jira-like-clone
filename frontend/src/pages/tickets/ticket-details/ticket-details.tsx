@@ -23,6 +23,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { Label } from "@/components/ui/label";
 import { DeleteModal } from "@/components/modals";
 import { DialogClose } from "@/components/ui/dialog";
+import axios from "axios";
+import ErrorMessage from "@/components/atoms/error-message";
 interface TicketViewProps {
   onBack?: () => void;
 }
@@ -31,18 +33,20 @@ const TicketView: React.FC<TicketViewProps> = () => {
   const { user } = useAuth();
   const { users: userList, fetchUsers } = useUser();
   const [edit, setEdit] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+
   const {
     fetchTicketById,
     ticketById: ticket,
     updateTicket,
     deleteTicket,
     loading: loadingTicketDetail,
+    error
   } = useTicket();
 
   const { id } = useParams();
   const navigate = useNavigate();
   const { handleSubmit, control, formState: { errors, isSubmitting }, register, reset } = useForm<TICKET>();
+  console.log('errors: ', errors);
 
   const isAdmin = user?.role === "admin";
 
@@ -85,7 +89,7 @@ const TicketView: React.FC<TicketViewProps> = () => {
       updateTicket(id!, data);
       setEdit(false);
     } catch (error) {
-      console.log("error: ", error);
+      console.log('error: ', error);
     }
   });
 
@@ -316,8 +320,19 @@ const TicketView: React.FC<TicketViewProps> = () => {
                 </div>
               </DeleteModal>
             </div>
+
           </CardContent>
+          {
+            Object.keys(errors)?.length > 0 &&
+            <ErrorMessage className="mx-auto text-base" message={errors[Object.keys(errors)[0] as keyof typeof errors]?.message} />
+          }
+          {
+            error && (
+              <p className="mx-auto text-red-500">{error?.message}</p>
+            )
+          }
         </Card>
+
       </div>
     </div>
   );
